@@ -1,0 +1,164 @@
+/* Fondo de modo noche */
+body {
+    background-color: #1e1e2f; /* Azul marino oscuro */
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal del juego */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Tablero del juego */
+.game-board {
+    display: grid;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 5px;
+}
+
+.tile {
+    width: 60px;
+    height: 60px;
+    background-color: #2c2c3e; /* Azul marino oscuro */
+    border: 2px solid #3e3e50; /* Bordes gris azulados */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+/* Teclado */
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.borrar{
+    background-color: #3e3e50; /* Fondo de teclas en azul oscuro */
+    color: #ffffff;
+    border-radius: 5px;
+    width: 40px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.intro{
+    background-color: #3e3e50; /* Fondo de teclas en azul oscuro */
+    color: #ffffff;
+    border-radius: 5px;
+    width: 40px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.key {
+    background-color: #3e3e50; /* Fondo de teclas en azul oscuro */
+    color: #ffffff;
+    border-radius: 5px;
+    width: 40px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.key:hover {
+    background-color: #4e4e60; /* Color de hover */
+}
+
+.key.large {
+    width: 60px; /* Tamaño más grande para teclas especiales */
+}
+
+.remove {
+    background-color: #3e3e50; /* Fondo de teclas en azul oscuro */
+    color: #ffffff;
+    border-radius: 5px;
+    width: 60px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.remove:hover {
+    background-color: #4e4e60; /* Color de hover */
+}
+
+/*.remove.large {
+    width: 60px;
+}*/
+
+
+.correct-letter{
+    background: rgb(140, 177, 85);
+}
+
+.wrong-position{
+    background: rgb(231, 178, 79);
+}
+
+.wrong-letter{
+    background: #f58d8d;
+}
+
+.dialog-design{
+    width: 280px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+p{
+    text-align: center;
+    font-size: 25px;
+}
+
+dialog{
+    border-radius: 16px;
+}
+
+.dialog-button{
+    height: 100px;
+    border-radius: 20px;
+    background: #c58c8c;
+}
+
