@@ -24,7 +24,9 @@ let currentColumnasIndex = 0;
 let lastElementInserted = 0;
 let gameWon;
 let gameLost;
-let lettersTyped = []
+let lettersTypedCorrectly = []
+let lettersTypedWrong = []
+let lettersTypedWrongPosition = []
 
 function makeBoard(){
     let tablero = "<table id='board'>"
@@ -47,6 +49,9 @@ function wordOfTheDay(){
 window.onload = function(){ 
     gameWon = false;
     gameLost = false;
+    lettersTypedCorrectly = []
+    lettersTypedWrong = []
+    lettersTypedWrongPosition = []
     makeBoard();
     wordOfTheDay();
     console.log("word: ", word)
@@ -55,6 +60,29 @@ window.onload = function(){
     document.getElementById('enter').addEventListener("click", () =>{
         checkIfExistWord()
     });
+}
+
+
+function getKeyFromKeyboard(letter, lettersTyped){
+    const keys = document.querySelectorAll('.key')
+    if(keys){
+        keys.forEach((value, key ) =>{
+            if(value.innerText === letter){
+                lettersTyped.push(value)
+            }
+        })
+    }
+}
+
+
+function remarKeyOnKeyboard(keysToRemark, className){
+    if(keysToRemark){
+        keysToRemark.forEach(keyOnKeyboard =>{
+            if(!keyOnKeyboard.classList.contains(className)){
+                keyOnKeyboard.classList.add(className)
+            }
+        })
+    }
 }
 
 function checkLineIsComplete(){
@@ -68,15 +96,24 @@ function checkLineIsComplete(){
     return (cellFilled === MAX_COLUMNAS);
 }
 
+
 function checkGameStatus(){
     let correctLetter = 0;
     for(let i=0; i<MAX_COLUMNAS; i++){
         const tile = getTile(currentfilasIndex, i)
         if(word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) === tile.innerText){
             tile.classList.add('correct-letter')
+            getKeyFromKeyboard(tile.innerText, lettersTypedCorrectly)
+            remarKeyOnKeyboard(lettersTypedCorrectly,'correct-letter')
             correctLetter++;
         }else if(word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) !== tile.innerText){
             tile.classList.add('wrong-position')
+            getKeyFromKeyboard(tile.innerText, lettersTypedWrongPosition)
+            remarKeyOnKeyboard(lettersTypedWrongPosition,'wrong-position')
+        }else{
+            tile.classList.add('wrong-letter')
+            getKeyFromKeyboard(tile.innerText, lettersTypedWrong)
+            remarKeyOnKeyboard(lettersTypedWrong,'wrong-letter')
         }
     }
 
