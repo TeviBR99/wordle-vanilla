@@ -44,14 +44,19 @@ function makeBoard(){
 function wordOfTheDay(){
     const maxRandom = diccionario.length-1
     word = diccionario[Math.floor(Math.random() * maxRandom)];
+    word = 'sight'
+}
+
+function initializeArrays(){
+    lettersTypedCorrectly = []
+    lettersTypedWrong = []
+    lettersTypedWrongPosition = []
 }
 
 window.onload = function(){ 
     gameWon = false;
     gameLost = false;
-    lettersTypedCorrectly = []
-    lettersTypedWrong = []
-    lettersTypedWrongPosition = []
+    initializeArrays();
     makeBoard();
     wordOfTheDay();
     console.log("word: ", word)
@@ -96,17 +101,42 @@ function checkLineIsComplete(){
     return (cellFilled === MAX_COLUMNAS);
 }
 
+function countRepeatedLettersOnWord(letter){
+    let nTimes = 0;
+    if(word && letter){
+        for(let i=0; i<word.length; i++){
+            if(word.toUpperCase()[i] === letter){
+                nTimes++
+            }
+        }
+        if(letter === "T"){
+            console.log("nTimes: ", nTimes)
+        }
+        
+    }
+    return nTimes
+}
+
+function appearancesOnArray(letter){
+    // sight
+    // treat
+    //think about this
+
+}
+
 
 function checkGameStatus(){
     let correctLetter = 0;
     for(let i=0; i<MAX_COLUMNAS; i++){
         const tile = getTile(currentfilasIndex, i)
-        if(word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) === tile.innerText){
+        const isCorrectLetter = word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) === tile.innerText
+        const isWrongPositionLetter = word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) !== tile.innerText
+        if(isCorrectLetter){
             tile.classList.add('correct-letter')
             getKeyFromKeyboard(tile.innerText, lettersTypedCorrectly)
             remarKeyOnKeyboard(lettersTypedCorrectly,'correct-letter')
             correctLetter++;
-        }else if(word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) !== tile.innerText){
+        }else if(isWrongPositionLetter){
             tile.classList.add('wrong-position')
             getKeyFromKeyboard(tile.innerText, lettersTypedWrongPosition)
             remarKeyOnKeyboard(lettersTypedWrongPosition,'wrong-position')
@@ -156,6 +186,7 @@ function nextLine(){
             currentfilasIndex++;
             currentColumnasIndex = 0
             enterKeyPressed = false;
+            initializeArrays();
         }else if(gameWon){
             const dialogYouWon = document.getElementById('dialog-you-won')
             dialogYouWon.showModal()
