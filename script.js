@@ -4,7 +4,7 @@ const MAX_COLUMNAS = 5;
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
 const borrado = "⌫";
 const intro = "Enter"
-const diccionario = [ 
+const bankOfWords = [ 
     "apple", "table", "grape", "chair", "plane",
     "water", "light", "night", "music", "stone",
     "cloud", "green", "brick", "swirl", "watch",
@@ -42,9 +42,9 @@ function makeBoard(){
 }
 
 function wordOfTheDay(){
-    const maxRandom = diccionario.length-1
-    word = diccionario[Math.floor(Math.random() * maxRandom)];
-    word = 'sight'
+    const maxRandom = bankOfWords.length-1
+    word = bankOfWords[Math.floor(Math.random() * maxRandom)].toUpperCase();
+    word = 'chart'.toUpperCase()
 }
 
 function initializeArrays(){
@@ -67,7 +67,6 @@ window.onload = function(){
     });
 }
 
-
 function getKeyFromKeyboard(letter, lettersTyped){
     const keys = document.querySelectorAll('.key')
     if(keys){
@@ -78,7 +77,6 @@ function getKeyFromKeyboard(letter, lettersTyped){
         })
     }
 }
-
 
 function remarKeyOnKeyboard(keysToRemark, className){
     if(keysToRemark){
@@ -101,49 +99,43 @@ function checkLineIsComplete(){
     return (cellFilled === MAX_COLUMNAS);
 }
 
-function countRepeatedLettersOnWord(letter){
-    let nTimes = 0;
-    if(word && letter){
-        for(let i=0; i<word.length; i++){
-            if(word.toUpperCase()[i] === letter){
-                nTimes++
-            }
-        }
-        if(letter === "T"){
-            console.log("nTimes: ", nTimes)
-        }
-        
-    }
-    return nTimes
+function getWordTyped(){
+    let currentWordTyped = "";
+    let valuesInnerText = Object.values(getTiles(currentfilasIndex)).map(values => values.innerText)
+    valuesInnerText.forEach(value => currentWordTyped += value) 
+    return currentWordTyped;
 }
 
-function appearancesOnArray(letter){
-    // sight
-    // treat
-    //think about this
-
+function remarkTile(tile, className){
+    tile.classList.add(className)
 }
-
 
 function checkGameStatus(){
     let correctLetter = 0;
-    for(let i=0; i<MAX_COLUMNAS; i++){
-        const tile = getTile(currentfilasIndex, i)
-        const isCorrectLetter = word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) === tile.innerText
-        const isWrongPositionLetter = word.toUpperCase().includes(tile.innerText) && word.toUpperCase().charAt(i) !== tile.innerText
+    const currentWordTyped = getWordTyped()
+    
+    for(let i=0; i<currentWordTyped.length; i++){
+        const letter = currentWordTyped.charAt(i)
+        const firstAppearance = word.indexOf(letter)
+        const lastAppearance = word.indexOf(letter)
+        const isCorrectLetter = word.includes(letter) && word.charAt(i) === letter   
         if(isCorrectLetter){
-            tile.classList.add('correct-letter')
-            getKeyFromKeyboard(tile.innerText, lettersTypedCorrectly)
+            remarkTile(getTile(currentfilasIndex, i), 'correct-letter')
+            getKeyFromKeyboard(letter, lettersTypedCorrectly)
             remarKeyOnKeyboard(lettersTypedCorrectly,'correct-letter')
             correctLetter++;
-        }else if(isWrongPositionLetter){
-            tile.classList.add('wrong-position')
-            getKeyFromKeyboard(tile.innerText, lettersTypedWrongPosition)
-            remarKeyOnKeyboard(lettersTypedWrongPosition,'wrong-position')
         }else{
-            tile.classList.add('wrong-letter')
-            getKeyFromKeyboard(tile.innerText, lettersTypedWrong)
-            remarKeyOnKeyboard(lettersTypedWrong,'wrong-letter')
+            if(i === firstAppearance || i === lastAppearance){
+                remarkTile(getTile(currentfilasIndex, i), 'wrong-position')
+                getKeyFromKeyboard(letter, lettersTypedWrongPosition)
+                remarKeyOnKeyboard(lettersTypedWrongPosition,'wrong-position')                    
+            }else{
+                remarkTile(getTile(currentfilasIndex, i), 'wrong-letter')
+                if(!lettersTypedWrongPosition.map(value => value.innerHTML).includes(letter) && !lettersTypedCorrectly.map(value => value.innerHTML).includes(letter)){
+                    getKeyFromKeyboard(letter, lettersTypedWrong)
+                    remarKeyOnKeyboard(lettersTypedWrong,'wrong-letter')
+                }
+            }
         }
     }
 
